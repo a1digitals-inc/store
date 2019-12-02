@@ -1,7 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import "bootstrap/dist/css/bootstrap.css"
+
+import Main from "./components/main.jsx"
+
 ReactDOM.render(
-    <h1>Calida</h1>,
+    <Main></Main>,
     document.getElementById("app")
 );
