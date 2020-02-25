@@ -19,5 +19,5 @@ COPY --from=go_builder /source/api.o /calida/
 COPY --from=node_builder /static /calida/static/
 RUN echo "$(ls .)"
 RUN ["chmod", "+x", "./api.o"]
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["./api.o"]
