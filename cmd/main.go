@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-
 	router := gin.Default()
 
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
