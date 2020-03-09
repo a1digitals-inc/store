@@ -1,0 +1,13 @@
+#app {
+    font-family: "Open Sans";
+}
+
+a {
+    color: black;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: gray;
+    text-decoration: none;
+}

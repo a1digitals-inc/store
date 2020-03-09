@@ -17,7 +17,10 @@ module.exports = {
         ]
     },
     entry: {
-        home: "./src/home.jsx"
+        home: "./src/home.jsx",
+        store: "./src/cart.jsx",
+        info: "./src/info.jsx",
+        store: "./src/store.jsx"
     },
     output: {
         path: path.resolve(__dirname + "/static"),
