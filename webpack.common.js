@@ -26,5 +26,11 @@ module.exports = {
     output: {
         path: path.resolve(__dirname + "/static"),
         filename: "[name].bundle.js",
-    }
+        chunkFilename: "common.bundle.js"
+    },
+    optimization: {
+        splitChunks: {
+            chunks: "all",
+        },
+    },
 };

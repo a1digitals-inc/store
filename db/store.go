@@ -43,7 +43,7 @@ func GetProduct(id string) *Product {
 func GetProducts() *[]ProductThumbnail {
 	var products []ProductThumbnail
 
-	rows, err := db.Query("SELECT productid, name, thumbnail FROM products WHERE public=TRUE")
+	rows, err := db.Query("SELECT productid, name, thumbnail FROM products WHERE public=TRUE ORDER BY name")
 	if err != nil {
 		log.Println(err)
 	}
