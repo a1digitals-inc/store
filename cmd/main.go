@@ -27,6 +27,7 @@ func main() {
 	// HTML
 	router.GET("/", api.Home)
 	router.GET("/webstore", api.Store)
+	router.GET("/product/:name", api.Product)
 
 	router.Run(":" + port)
 }

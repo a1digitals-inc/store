@@ -33,13 +33,13 @@ class ProductList extends React.Component {
         const { error, isLoaded, items } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
-            return <div className="spinner-border"></div>
+        } else if (!isLoaded || items == null) {
+            return <div className="spinner-border"></div>       
         } else {
             return (
-                <ul className="list-inline">
+                <ul className="row justify-content-center list-inline">
                 {items.map(product => (
-                    <li className="list-inline-item" style={{width: "178px", height: "178px"}}>
+                    <li className="col-sm-3 col-lg-2 list-inline-item">
                         <a href={"/product/" + product.id}>
                             <img className="w-100"src={product.thumbnail} />
                             <p>{product.name}</p>

@@ -19,6 +19,7 @@ module.exports = {
     entry: {
         home: "./src/home.jsx",
         store: "./src/cart.jsx",
+        product: "./src/product.jsx",
         info: "./src/info.jsx",
         store: "./src/store.jsx"
     },

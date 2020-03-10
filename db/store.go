@@ -8,7 +8,8 @@ type Product struct {
 	Images      []string `json:"images"`
 	Description string   `json:"description"`
 	Price       int      `json:"price"`
-	Discount    float32  `jsonn:"discount"`
+	Discount    float32  `json:"discount"`
+	Public      bool     `json:"public"`
 }
 
 type ProductThumbnail struct {
@@ -20,7 +21,7 @@ type ProductThumbnail struct {
 
 func GetProduct(id string) *Product {
 	var product Product
-	err := db.QueryRow("SELECT productid, name, description, price, ROUND((price * discount)::numeric, 2) FROM products WHERE productid=$1", id).Scan(&product.Id, &product.Name, &product.Description, &product.Price, &product.Discount)
+	err := db.QueryRow("SELECT productid, name, description, price, ROUND((price * discount)::numeric, 2), public FROM products WHERE productid=$1 AND public=TRUE", id).Scan(&product.Id, &product.Name, &product.Description, &product.Price, &product.Discount, &product.Public)
 	if err != nil {
 		log.Println(err)
 	}
@@ -42,7 +43,7 @@ func GetProduct(id string) *Product {
 func GetProducts() *[]ProductThumbnail {
 	var products []ProductThumbnail
 
-	rows, err := db.Query("SELECT productid, name, thumbnail FROM products")
+	rows, err := db.Query("SELECT productid, name, thumbnail FROM products WHERE public=TRUE")
 	if err != nil {
 		log.Println(err)
 	}

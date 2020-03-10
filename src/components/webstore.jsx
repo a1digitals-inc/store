@@ -1,13 +1,14 @@
 import React from "react";
 
-import ProductList from "./productlist.jsx"
+import StoreHeader from "./storeheader.jsx";
+import ProductList from "./productlist.jsx";
 
 
 class WebStore extends React.Component {
     render() {
         return (
-            <div className="contaienr-fluid text-center">
-                <h1 className="m-5">Store</h1>
+            <div className="container text-center">
+                <StoreHeader />
                 <ProductList></ProductList>
             </div>
         );

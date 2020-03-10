@@ -26,6 +26,13 @@ func Store(c *gin.Context) {
 	})
 }
 
+func Product(c *gin.Context) {
+	c.HTML(200, "index.tmpl", gin.H{
+		"title":  "loading...",
+		"bundle": "product",
+	})
+}
+
 func GetProducts(c *gin.Context) {
 	products := db.GetProducts()
 	c.JSON(200, products)
