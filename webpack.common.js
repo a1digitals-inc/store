@@ -21,7 +21,8 @@ module.exports = {
         store: "./src/cart.jsx",
         product: "./src/product.jsx",
         info: "./src/info.jsx",
-        store: "./src/store.jsx"
+        store: "./src/store.jsx",
+        login: "./src/login.jsx"
     },
     output: {
         path: path.resolve(__dirname + "/static"),

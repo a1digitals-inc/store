@@ -8,7 +8,7 @@ class WebStore extends React.Component {
     render() {
         return (
             <div className="container text-center">
-                <StoreHeader />
+                <StoreHeader link={"/"}></StoreHeader>
                 <ProductList></ProductList>
             </div>
         );

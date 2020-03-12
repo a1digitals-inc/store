@@ -22,7 +22,7 @@ class ProductCarousel extends React.Component {
     }
 
     render() {
-        return <img className="img-fluid" src={this.props.images[this.state.active]} />;
+        return <img className="img-fluid fadet" src={this.props.images[this.state.active]} />;
     }
 }
 

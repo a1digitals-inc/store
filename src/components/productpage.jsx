@@ -40,15 +40,15 @@ class ProductPage extends React.Component {
         } else if (!isLoaded || data == null) {
             return (
                 <div className="container text-center">
-                    <h1 className="m-5">Store</h1>
+                <StoreHeader link="/webstore"></StoreHeader>
                     <div className="spinner-border"></div>
                 </div>
             );
         } else {
             return (
                 <div className="container text-center">
-                    <StoreHeader />
-                    <div className="row justify-content-center">
+                    <StoreHeader link="/webstore"></StoreHeader>
+                    <div className="row justify-content-center fade-in">
                         <div className="col-sm">
                             <ProductCarousel images={data.images}></ProductCarousel> 
                         </div>

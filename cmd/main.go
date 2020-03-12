@@ -23,11 +23,18 @@ func main() {
 	// API
 	router.GET("/api/products", api.GetProducts)
 	router.GET("/api/product/:name", api.GetProduct)
+	router.POST("/api/login", api.PostLogin)
 
-	// HTML
+	// Pages
 	router.GET("/", api.Home)
 	router.GET("/webstore", api.Store)
 	router.GET("/product/:name", api.Product)
+
+	// Admin Pages
+	router.GET("/login", api.Login)
+
+	router.GET("/dashboard", api.Auth(api.Dashboard))
+	//router.GET("/dashboard/products" api.Dashboard)
 
 	router.Run(":" + port)
 }
