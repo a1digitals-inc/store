@@ -41,3 +41,8 @@ button {
 .productimage {
     max-width: 600px;
 }
+
+.mini-image {
+    max-width: 60px;
+    max-height: 60px;
+}

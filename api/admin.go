@@ -5,5 +5,15 @@ import (
 )
 
 func Dashboard(c *gin.Context) {
-	c.JSON(200, gin.H{"data": "Authorized"})
+	c.HTML(200, "index.tmpl", gin.H{
+		"title":  "dashboard",
+		"bundle": "dashboard",
+	})
+}
+
+func AdminProducts(c *gin.Context) {
+	c.HTML(200, "index.tmpl", gin.H{
+		"title":  "store products",
+		"bundle": "adminproducts",
+	})
 }

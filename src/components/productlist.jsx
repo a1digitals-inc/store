@@ -34,7 +34,7 @@ class ProductList extends React.Component {
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded || items == null) {
-            return <div className="spinner-border"></div>       
+            return <div className="spinner-border"></div>;
         } else {
             return (
                 <ul className="row justify-content-center list-inline">
@@ -42,7 +42,7 @@ class ProductList extends React.Component {
                     <li className="col-sm-3 col-lg-2 list-inline-item fade-in">
                         <a href={"/product/" + product.id}>
                             <img className="w-100"src={product.thumbnail} />
-                            <p>{product.name}</p>
+                            {product.name}
                             {product.soldout && <p><strong>Soldout</strong></p>}
                         </a>
                     </li>

@@ -34,6 +34,7 @@ func main() {
 	router.GET("/login", api.Login)
 
 	router.GET("/dashboard", api.Auth(api.Dashboard))
+	router.GET("/dashboard/products", api.Auth(api.AdminProducts))
 	//router.GET("/dashboard/products" api.Dashboard)
 
 	router.Run(":" + port)
