@@ -13,19 +13,19 @@ type Product struct {
 }
 
 type ProductThumbnail struct {
-	Id        int    `json:"id"`
-	Name      string `json:"name"`
-	Thumbnail string `json:"thumbnail"`
-	Soldout   bool   `json:"soldout"`
+	Identifier string `json:"identifier"`
+	Name       string `json:"name"`
+	Thumbnail  string `json:"thumbnail"`
+	Soldout    bool   `json:"soldout"`
 }
 
 func GetProduct(id string) *Product {
 	var product Product
-	err := db.QueryRow("SELECT productid, name, description, price, ROUND((price * discount)::numeric, 2), public FROM products WHERE productid=$1 AND public=TRUE", id).Scan(&product.Id, &product.Name, &product.Description, &product.Price, &product.Discount, &product.Public)
+	err := db.QueryRow("SELECT productid, name, description, price, ROUND((price * discount)::numeric, 2), public FROM products WHERE identifier=$1 AND public=TRUE", id).Scan(&product.Id, &product.Name, &product.Description, &product.Price, &product.Discount, &product.Public)
 	if err != nil {
 		log.Println(err)
 	}
-	rows, err := db.Query("SELECT image FROM products INNER JOIN productimages USING(productid) WHERE productid=$1", id)
+	rows, err := db.Query("SELECT image FROM products INNER JOIN productimages USING(productid) WHERE productid=$1", product.Id)
 	if err != nil {
 		log.Println(err)
 	}
@@ -43,7 +43,7 @@ func GetProduct(id string) *Product {
 func GetProducts() *[]ProductThumbnail {
 	var products []ProductThumbnail
 
-	rows, err := db.Query("SELECT productid, name, thumbnail FROM products WHERE public=TRUE ORDER BY name")
+	rows, err := db.Query("SELECT productid, name, thumbnail, identifier FROM products WHERE public=TRUE ORDER BY name")
 	if err != nil {
 		log.Println(err)
 	}
@@ -51,10 +51,11 @@ func GetProducts() *[]ProductThumbnail {
 
 	for rows.Next() {
 		var product ProductThumbnail
-		rows.Scan(&product.Id, &product.Name, &product.Thumbnail)
+		var id int
+		rows.Scan(&id, &product.Name, &product.Thumbnail, &product.Identifier)
 
 		var quantity int
-		err := db.QueryRow("SELECT SUM(quantity) FROM products INNER JOIN productstock USING(productid) GROUP BY productid HAVING productid=$1", product.Id).Scan(&quantity)
+		err := db.QueryRow("SELECT SUM(quantity) FROM products INNER JOIN productstock USING(productid) GROUP BY productid HAVING productid=$1", id).Scan(&quantity)
 		if err != nil {
 			log.Println(err)
 		}

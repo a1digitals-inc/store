@@ -7,21 +7,22 @@ class LoginPage extends React.Component {
         super(props);
         this.state = {
             message: ''
-        }
-        this.login = this.login.bind(this)
+        };
+        this.login = this.login.bind(this);
     }
     
     login(event) {
-        event.preventDefault()
-        const data = new FormData(event.target)
+        event.preventDefault();
+        const data = new FormData(event.target);
         const options = {
             method: "POST",
             body: data
-        }
+        };
         fetch("/api/login", options)
             .then(res => res.json())
             .then(
                 (result) => {
+                    console.log(result);
                     if (result.valid) {
                         window.location.href = "/dashboard"; 
                     } else {

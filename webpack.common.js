@@ -24,7 +24,8 @@ module.exports = {
         store: "./src/store.jsx",
         login: "./src/login.jsx",
         dashboard: "./src/dashboard.jsx",
-        adminproducts: "./src/adminproducts.jsx"
+        adminproducts: "./src/adminproducts.jsx",
+        adminproduct: "./src/adminproduct.jsx"
     },
     output: {
         path: path.resolve(__dirname + "/static"),

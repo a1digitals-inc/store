@@ -40,7 +40,7 @@ class ProductList extends React.Component {
                 <ul className="row justify-content-center list-inline">
                 {items.map(product => (
                     <li className="col-sm-3 col-lg-2 list-inline-item fade-in">
-                        <a href={"/product/" + product.id}>
+                        <a href={"/product/" + product.identifier}>
                             <img className="w-100"src={product.thumbnail} />
                             {product.name}
                             {product.soldout && <p><strong>Soldout</strong></p>}

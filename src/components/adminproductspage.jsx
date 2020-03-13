@@ -1,6 +1,6 @@
 import React from "react";
 
-class AdminProductPage extends React.Component {
+class AdminProductsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -54,11 +54,11 @@ class AdminProductPage extends React.Component {
                         </li>
                     ))}
                     </ul>
-                    <a className="float-right btn btn-primary m-3" href="/dashboard/newproduct/">Add</a>
+                    <a className="float-right btn btn-primary m-3" href="/dashboard/product">Add</a>
                 </div>
             );
         }
     }
 }
 
-export default AdminProductPage;
+export default AdminProductsPage;

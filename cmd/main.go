@@ -23,6 +23,7 @@ func main() {
 	// API
 	router.GET("/api/products", api.GetProducts)
 	router.GET("/api/product/:name", api.GetProduct)
+	router.PUT("/api/product/:name", api.Auth(api.UpdateProduct))
 	router.POST("/api/login", api.PostLogin)
 
 	// Pages
@@ -35,7 +36,8 @@ func main() {
 
 	router.GET("/dashboard", api.Auth(api.Dashboard))
 	router.GET("/dashboard/products", api.Auth(api.AdminProducts))
-	//router.GET("/dashboard/products" api.Dashboard)
+	router.GET("/dashboard/product", api.Auth(api.AdminProduct))
+	router.GET("/dashboard/product/:name", api.Auth(api.AdminProduct))
 
 	router.Run(":" + port)
 }

@@ -38,7 +38,7 @@ func PostLogin(c *gin.Context) {
 			c.JSON(200, gin.H{"valid": false})
 			return
 		}
-		expiration := time.Now().Add(5 * time.Minute).Unix()
+		expiration := time.Now().Add(30 * time.Minute).Unix()
 		claims := &jwt.StandardClaims{
 			ExpiresAt: expiration,
 		}
@@ -47,7 +47,7 @@ func PostLogin(c *gin.Context) {
 		if err != nil {
 			log.Println(err)
 		}
-		c.SetCookie("token", tokenString, 300, "/", os.Getenv("DOMAIN"), false, true)
+		c.SetCookie("token", tokenString, 1800, "/", os.Getenv("DOMAIN"), false, true)
 		c.JSON(200, gin.H{"valid": true})
 	}
 }
@@ -56,7 +56,7 @@ func Auth(next gin.HandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token, err := c.Cookie("token")
 		if err != nil {
-			c.JSON(401, gin.H{"error": err.Error()})
+			c.Redirect(302, "/login")
 			return
 		} else {
 			parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
@@ -72,7 +72,7 @@ func Auth(next gin.HandlerFunc) gin.HandlerFunc {
 			if parsedToken.Valid {
 				next(c)
 			} else {
-				c.JSON(401, gin.H{"error": "Invalid token"})
+				c.JSON(301, gin.H{"error": "Invalid Token"})
 			}
 		}
 	}

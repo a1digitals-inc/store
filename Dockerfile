@@ -14,6 +14,7 @@ RUN npx webpack --config webpack.prod.js
 FROM alpine:latest
 WORKDIR /calida
 RUN apk --no-cache add ca-certificates
+COPY --from=go_builder /source/static/images/ /calida/static/
 COPY --from=go_builder /source/views /calida/views/
 COPY --from=go_builder /source/api.o /calida/
 COPY --from=node_builder /static /calida/static/
