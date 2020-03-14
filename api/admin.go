@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sergiosegrera/store/db"
-	"log"
 	"path/filepath"
 	"strconv"
 )
