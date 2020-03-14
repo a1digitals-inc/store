@@ -49,7 +49,7 @@ class AdminProductsPage extends React.Component {
                         <li className="fade-in list-group-item">
                             <img className="float-left mini-image" src={product.thumbnail} />
                             {product.name}
-                            <a className="float-right btn btn-primary" href={"/dashboard/product/" + product.id}>Edit</a>
+                            <a className="float-right btn btn-primary" href={"/dashboard/product/" + product.identifier}>Edit</a>
                             {product.soldout && <p><strong>Soldout</strong></p>}
                         </li>
                     ))}

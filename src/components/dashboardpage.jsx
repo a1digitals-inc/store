@@ -9,6 +9,7 @@ class DashboardPage extends React.Component {
                     <li className="py-1"><a className="h5" href="/dashboard/products">PRODUCTS</a></li>
                     <li className="py-1"><a className="h5" href="/dashboard/orders">ORDERS</a></li>
                     <li className="py-1"><a className="h5" href="/dashboard/settings">SETTINGS</a></li>
+                    <li className="py-1"><a className="h5" href="/">BACK TO STORE</a></li>
                 </ul>
             </div>
         );

@@ -27,7 +27,7 @@ class AdminProductPage extends React.Component {
             method: "PUT",
             body: data
         };
-        fetch("/api/product/" + this.state.id, options)
+        fetch("/api/product", options)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -54,7 +54,9 @@ class AdminProductPage extends React.Component {
     render() {
         return (
             <div className="container-fluid">
+                <h1 className="m-5 text-center"><a href="/dashboard/products">Dashboard</a></h1>
                 <form className="col-sm-10 m-auto p-2" onSubmit={this.submit}>
+                    {this.state.message && <div className="fade-in alert alert-secondary">{this.state.message}</div>}
                     <div className="form-group">
                         <label>Name</label>
                         <input className="form-control" type="text" name="name" />

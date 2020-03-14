@@ -30,18 +30,16 @@ func AdminProduct(c *gin.Context) {
 }
 
 func UpdateProduct(c *gin.Context) {
-	id := c.Request.URL.Path
-	log.Println(id)
 	name := c.PostForm("name")
 	if name == "" {
-		c.JSON(422, gin.H{"error": "Invalid name"})
+		c.JSON(422, gin.H{"message": "Invalid name"})
 		return
 	}
 
 	identifier := c.PostForm("identifier")
 	// TODO: Verify that the identifier doesn't contain spaces or special characters
 	if identifier == "" {
-		c.JSON(422, gin.H{"error": "Invalid name"})
+		c.JSON(422, gin.H{"message": "Invalid name"})
 		return
 	}
 
@@ -53,37 +51,43 @@ func UpdateProduct(c *gin.Context) {
 		public = false
 	}
 
+	// TODO: Limit thumbnail and images file size
 	thumbnailFile, err := c.FormFile("thumbnail")
 	if err != nil {
-		c.JSON(422, gin.H{"error": "Invalid thumbnail"})
+		c.JSON(422, gin.H{"message": "Invalid thumbnail"})
 		return
 	}
 	thumbnailExtension := filepath.Ext(thumbnailFile.Filename)
 	thumbnail := "/static/images/" + identifier + "-thumbnail" + thumbnailExtension
-	err = c.SaveUploadedFile(thumbnailFile, thumbnail)
+	err = c.SaveUploadedFile(thumbnailFile, "."+thumbnail)
 	if err != nil {
-		log.Println(err)
-		c.JSON(422, gin.H{"error": "Error saving file"})
-	}
-
-	// TODO: Save images
-	form, err := c.MultipartForm()
-	images := form.File["images"]
-	if err != nil {
-		c.JSON(422, gin.H{"error": "Invalid images"})
+		c.JSON(500, gin.H{"message": "Error saving thumbnail"})
 		return
 	}
-	for i, imageFile := range images {
+
+	form, err := c.MultipartForm()
+	imageFiles := form.File["images"]
+	if err != nil {
+		c.JSON(422, gin.H{"message": "Invalid images"})
+		return
+	}
+	var images []string
+	for i, imageFile := range imageFiles {
 		imageExtension := filepath.Ext(imageFile.Filename)
 		image := "/static/images/" + identifier + "-" + strconv.Itoa(i) + imageExtension
-		log.Println(image)
+		err = c.SaveUploadedFile(imageFile, "."+image)
+		if err != nil {
+			c.JSON(500, gin.H{"message": "Error saving images"})
+			return
+		}
+		images = append(images, image)
 	}
 
 	description := c.PostForm("description")
 
 	price := c.PostForm("price")
 	if price == "" {
-		c.JSON(422, gin.H{"error": "Invalid price"})
+		c.JSON(422, gin.H{"message": "Invalid price"})
 		return
 	}
 
@@ -92,7 +96,8 @@ func UpdateProduct(c *gin.Context) {
 		discount = "1"
 	}
 
-	err = db.InsertProduct(name, public, thumbnail, description, price, discount, identifier)
+	// TODO: If identifier exists update instead of insert
+	err = db.InsertProduct(name, public, thumbnail, description, price, discount, identifier, images)
 	if err != nil {
 		c.JSON(500, gin.H{"message": err.Error()})
 		return
