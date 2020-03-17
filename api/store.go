@@ -34,11 +34,15 @@ func Product(c *gin.Context) {
 }
 
 func GetProducts(c *gin.Context) {
-	products := db.GetProducts()
+	products := db.GetProducts(true)
 	c.JSON(200, products)
 }
 
 func GetProduct(c *gin.Context) {
-	product := db.GetProduct(c.Param("name"))
+	product, err := db.GetProduct(c.Param("name"), true)
+	if err != nil {
+		c.JSON(404, gin.H{"message": "Product not found"})
+		return
+	}
 	c.JSON(200, product)
 }

@@ -55,13 +55,19 @@ class ProductPage extends React.Component {
                         <div className="col-sm">
                             <h2>{data.name}</h2>
                             <p>{data.description}</p>
-                            {data.discount < data.price ? (
+                            {data.discount * data.price < data.price ? (
                                 <div>
                                     <p><del>{data.price} $</del></p>
-                                    <p><strong>{data.discount} $</strong></p>
+                                    <p><strong>{+(Math.round(data.discount * data.price + "e+2") + "e-2")} $</strong></p>
                                 </div>
                             ) : (<p><strong>{data.price} $</strong></p>)}
-                            <button type="button" className="btn btn-dark">ADD TO CART</button>
+                            {data.options && data.options.length > 0 &&
+                            <select className="form-control">
+                                {data.options.map(option => (
+                                    <option key={option}>{option}</option>
+                                ))}
+                            </select>}
+                            {data.options ? <button type="button" className="btn btn-dark my-3">ADD TO CART</button> : <button type="button" className="btn btn-dark my-3" disabled>SOLDOUT</button>}
                         </div>
                     </div>
                 </div>

@@ -26,7 +26,7 @@ class ProductList extends React.Component {
                         error
                     });
                 }
-            )
+            );
     }
 
     render() {
@@ -39,7 +39,7 @@ class ProductList extends React.Component {
             return (
                 <ul className="row justify-content-center list-inline">
                 {items.map(product => (
-                    <li className="col-sm-3 col-lg-2 list-inline-item fade-in">
+                    <li key={product.identifier} className="col-sm-3 col-lg-2 list-inline-item fade-in">
                         <a href={"/product/" + product.identifier}>
                             <img className="w-100"src={product.thumbnail} />
                             {product.name}

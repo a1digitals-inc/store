@@ -11,7 +11,7 @@ class AdminProductsPage extends React.Component {
     }
     
     componentDidMount() {
-        fetch("/api/products")
+        fetch("/api/admin/products")
             .then(res => res.json())
             .then(
                 (result) => {

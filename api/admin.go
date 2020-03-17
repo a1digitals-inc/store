@@ -16,16 +16,32 @@ func Dashboard(c *gin.Context) {
 
 func AdminProducts(c *gin.Context) {
 	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "loading...",
+		"title":  "store products",
 		"bundle": "adminproducts",
 	})
 }
 
 func AdminProduct(c *gin.Context) {
 	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "loading...",
+		"title":  "new product",
 		"bundle": "adminproduct",
 	})
+}
+
+func GetAllProducts(c *gin.Context) {
+	// Gets all products including private products
+	products := db.GetProducts(false)
+	c.JSON(200, products)
+}
+
+func GetAllProduct(c *gin.Context) {
+	// Gets a product even if its private
+	product, err := db.GetProduct(c.Param("name"), false)
+	if err != nil {
+		c.JSON(404, gin.H{"message": "Product not found"})
+		return
+	}
+	c.JSON(200, product)
 }
 
 func UpdateProduct(c *gin.Context) {
@@ -51,6 +67,7 @@ func UpdateProduct(c *gin.Context) {
 	}
 
 	// TODO: Limit thumbnail and images file size
+	// TODO: If updating item no need to require a thumbnail and image.
 	thumbnailFile, err := c.FormFile("thumbnail")
 	if err != nil {
 		c.JSON(422, gin.H{"message": "Invalid thumbnail"})
@@ -95,11 +112,21 @@ func UpdateProduct(c *gin.Context) {
 		discount = "1"
 	}
 
-	// TODO: If identifier exists update instead of insert
-	err = db.InsertProduct(name, public, thumbnail, description, price, discount, identifier, images)
+	id, err := db.GetProductId(identifier)
 	if err != nil {
-		c.JSON(500, gin.H{"message": err.Error()})
-		return
+		// If no row is found insert
+		err = db.InsertProduct(name, public, thumbnail, description, price, discount, identifier, images)
+		if err != nil {
+			c.JSON(500, gin.H{"message": err.Error()})
+			return
+		}
+	} else {
+		err = db.UpdateProduct(id, name, public, thumbnail, description, price, discount, identifier, images)
+		if err != nil {
+			c.JSON(500, gin.H{"message": err.Error()})
+			return
+		}
 	}
+
 	c.JSON(200, gin.H{"message": "Changes saved"})
 }
