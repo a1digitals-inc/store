@@ -31,7 +31,7 @@ func PostLogin(c *gin.Context) {
 		if err != nil {
 			log.Println(err)
 		}
-		c.JSON(200, gin.H{"data": "Password created"})
+		c.JSON(200, gin.H{"message": "Password created"})
 	} else {
 		err := bcrypt.CompareHashAndPassword([]byte(password), []byte(attempt))
 		if err != nil {
@@ -43,7 +43,7 @@ func PostLogin(c *gin.Context) {
 			ExpiresAt: expiration,
 		}
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		tokenString, err := token.SignedString([]byte(os.Getenv("SECRET-KEY")))
+		tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 		if err != nil {
 			log.Println(err)
 		}
@@ -63,16 +63,16 @@ func Auth(next gin.HandlerFunc) gin.HandlerFunc {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, errors.New("Parsing JWT token error")
 				}
-				return []byte(os.Getenv("SECRET-KEY")), nil
+				return []byte(os.Getenv("SECRET_KEY")), nil
 			})
 			if err != nil {
-				c.JSON(500, gin.H{"error": err.Error()})
+				c.JSON(500, gin.H{"message": err.Error()})
 				return
 			}
 			if parsedToken.Valid {
 				next(c)
 			} else {
-				c.JSON(301, gin.H{"error": "Invalid Token"})
+				c.JSON(301, gin.H{"message": "Invalid Token"})
 			}
 		}
 	}

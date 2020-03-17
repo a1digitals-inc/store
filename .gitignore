@@ -7,3 +7,4 @@ package-lock.json
 go.sum
 *.o
 Makefile
+*.env
