@@ -5,6 +5,7 @@ import (
 	"github.com/sergiosegrera/store/db"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 func Dashboard(c *gin.Context) {
@@ -52,10 +53,15 @@ func UpdateProduct(c *gin.Context) {
 	}
 
 	identifier := c.PostForm("identifier")
-	// TODO: Verify that the identifier doesn't contain spaces or special characters
-	if identifier == "" {
-		c.JSON(422, gin.H{"message": "Invalid name"})
+	if identifier == "" || strings.ContainsAny(identifier, " /?$#") {
+		c.JSON(422, gin.H{"message": "Invalid identifier"})
 		return
+	}
+
+	product, err := db.GetProduct(identifier, false)
+	exists := true
+	if err != nil {
+		exists = false
 	}
 
 	publicCheck := c.PostForm("public")
@@ -67,36 +73,44 @@ func UpdateProduct(c *gin.Context) {
 	}
 
 	// TODO: Limit thumbnail and images file size
-	// TODO: If updating item no need to require a thumbnail and image.
-	thumbnailFile, err := c.FormFile("thumbnail")
+	thumbnailFile, err := c.FormFile("thumbnailFile")
+	var thumbnailPath string
 	if err != nil {
-		c.JSON(422, gin.H{"message": "Invalid thumbnail"})
-		return
-	}
-	thumbnailExtension := filepath.Ext(thumbnailFile.Filename)
-	thumbnail := "/static/images/" + identifier + "-thumbnail" + thumbnailExtension
-	err = c.SaveUploadedFile(thumbnailFile, "."+thumbnail)
-	if err != nil {
-		c.JSON(500, gin.H{"message": "Error saving thumbnail"})
-		return
+		if !exists {
+			c.JSON(422, gin.H{"message": "Invalid thumbnail"})
+			return
+		}
+	} else {
+		thumbnailExtension := filepath.Ext(thumbnailFile.Filename)
+		thumbnailPath = "/static/images/" + identifier + "-thumbnail" + thumbnailExtension
+		err = c.SaveUploadedFile(thumbnailFile, "."+thumbnailPath)
+		if err != nil {
+			c.JSON(500, gin.H{"message": "Error saving thumbnail"})
+			return
+		}
+		product.Thumbnail = thumbnailPath
 	}
 
 	form, err := c.MultipartForm()
-	imageFiles := form.File["images"]
+	imageFiles := form.File["imageFiles"]
+	var imagePaths []string
 	if err != nil {
-		c.JSON(422, gin.H{"message": "Invalid images"})
-		return
-	}
-	var images []string
-	for i, imageFile := range imageFiles {
-		imageExtension := filepath.Ext(imageFile.Filename)
-		image := "/static/images/" + identifier + "-" + strconv.Itoa(i) + imageExtension
-		err = c.SaveUploadedFile(imageFile, "."+image)
-		if err != nil {
-			c.JSON(500, gin.H{"message": "Error saving images"})
+		if !exists {
+			c.JSON(422, gin.H{"message": "Invalid images"})
 			return
 		}
-		images = append(images, image)
+	} else {
+		for i, imageFile := range imageFiles {
+			imageExtension := filepath.Ext(imageFile.Filename)
+			image := "/static/images/" + identifier + "-" + strconv.Itoa(i) + imageExtension
+			err = c.SaveUploadedFile(imageFile, "."+image)
+			if err != nil {
+				c.JSON(500, gin.H{"message": "Error saving images"})
+				return
+			}
+			imagePaths = append(imagePaths, image)
+		}
+		product.Images = imagePaths
 	}
 
 	description := c.PostForm("description")
@@ -112,16 +126,14 @@ func UpdateProduct(c *gin.Context) {
 		discount = "1"
 	}
 
-	id, err := db.GetProductId(identifier)
-	if err != nil {
-		// If no row is found insert
-		err = db.InsertProduct(name, public, thumbnail, description, price, discount, identifier, images)
+	if !exists {
+		err = db.InsertProduct(name, public, thumbnailPath, description, price, discount, identifier, imagePaths)
 		if err != nil {
 			c.JSON(500, gin.H{"message": err.Error()})
 			return
 		}
 	} else {
-		err = db.UpdateProduct(id, name, public, thumbnail, description, price, discount, identifier, images)
+		err = db.UpdateProduct(product.Id, name, public, product.Thumbnail, description, price, discount, identifier, product.Images)
 		if err != nil {
 			c.JSON(500, gin.H{"message": err.Error()})
 			return

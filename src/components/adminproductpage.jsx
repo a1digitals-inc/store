@@ -57,8 +57,8 @@ class AdminProductPage extends React.Component {
     }
 
     submit(event) {
-        event.preventDefault()
-        const data = new FormData(event.target)
+        event.preventDefault();
+        const data = new FormData(event.target);
         const options = {
             method: "PUT",
             body: data
@@ -129,12 +129,12 @@ class AdminProductPage extends React.Component {
                         </div>
                         <div className="form-group">
                             <label>Thumbnail</label>
-                            <input className="form-control-file" type="file" name="thumbnail" onChange={this.thumbnailUpload} />
+                            <input className="form-control-file" type="file" name="thumbnailFile" onChange={this.thumbnailUpload} />
                             <img src={thumbnail} className="mini-image my-2" />
                         </div>
                         <div className="form-group">
                             <label>Images</label>
-                            <input className="form-control-file" type="file" name="images" multiple onChange={this.imageUpload} />
+                            <input className="form-control-file" type="file" name="imageFiles" multiple onChange={this.imageUpload} />
                             {images && images.map((image, i) => (
                                 <img key={i} src={image} className="mini-image my-2 mr-2"/>
                             ))}
