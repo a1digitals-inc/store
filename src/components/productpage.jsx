@@ -54,7 +54,9 @@ class ProductPage extends React.Component {
                         </div>
                         <div className="col-sm">
                             <h2>{data.name}</h2>
-                            <p>{data.description}</p>
+                            <div className="my-3">
+                            {data.description.split('\n').map(text => (<p className="my-1" key={text}>{text}</p>))}
+                            </div>
                             {data.discount * data.price < data.price ? (
                                 <div>
                                     <p><del>{data.price} $</del></p>
