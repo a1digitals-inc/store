@@ -1,15 +1,36 @@
-# Calida
-Calida is a barebones Go + React template.  
-Uses gin as the default web framework.
+# Store
+Store is an online e-commerce web application designed for small online stores.
 
-## Live Reload
-`make run` starts webpack with the watch option and [Air](https://github.com/cosmtrek/air) for live Go reloading.
+## Project Structure
+```
+/api -- Handlers
+/cmd -- Main file
+/db -- Database
+/views -- HTML templates
+/src -- Webpack entrypoints
+/src/components -- React Components
+/static -- .js bundles
+```
 
-## Docker
-```make docker``` builds a docker image
-
-## Installation
-`git clone https://github.com/sergiosegrera/calida [Project Name] && make init`
+## Endpoints
+```
+GET /api/products
+GET /api/products/:name
+PUT /api/product -- Auth required
+POST /api/login
+GET /api/admin/products -- Auth required
+GET /api/admin/product/:name -- Auth required
+```
+### TODO
+```
+GET /api/admin/stock/:name -- Auth required
+PUT /api/admin/stock/:name -- Auth required
+```
 
 ## TODO
-* Heroku integration
+* Separate models
+* General code cleanup
+* Separate backend and frontend
+* Add product stock manager
+* Add shopping cart
+* Add purchasing
