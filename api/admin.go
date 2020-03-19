@@ -132,13 +132,40 @@ func UpdateProduct(c *gin.Context) {
 			c.JSON(500, gin.H{"message": err.Error()})
 			return
 		}
-	} else {
-		err = db.UpdateProduct(product.Id, name, public, product.Thumbnail, description, price, discount, identifier, product.Images)
+		c.JSON(201, gin.H{"message": "Product created"})
+		return
+	}
+	err = db.UpdateProduct(product.Id, name, public, product.Thumbnail, description, price, discount, identifier, product.Images)
+	if err != nil {
+		c.JSON(500, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"message": "Product updated"})
+}
+
+func GetStocks(c *gin.Context) {
+	identifier := c.Param("name")
+	stocks, _ := db.GetStocks(identifier)
+	c.JSON(200, gin.H{"message": stocks})
+}
+
+func PutStock(c *gin.Context) {
+	identifier := c.Param("name")
+	id, err := db.GetProductId(identifier)
+	if err != nil {
+		c.JSON(404, gin.H{"message": "Product not found"})
+	}
+	option := c.PostForm("option")
+	quantity := c.PostForm("quantity")
+	err = db.UpdateStock(id, option, quantity)
+	if err != nil {
+		err = db.InsertStock(id, option, quantity)
 		if err != nil {
-			c.JSON(500, gin.H{"message": err.Error()})
+			c.JSON(500, gin.H{"message": "Internal server error"})
 			return
 		}
+		c.JSON(200, gin.H{"message": "Stock created"})
+		return
 	}
-
-	c.JSON(200, gin.H{"message": "Changes saved"})
+	c.JSON(200, gin.H{"message": "Stock updated"})
 }

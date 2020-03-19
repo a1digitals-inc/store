@@ -18,6 +18,7 @@ class ProductPage extends React.Component {
     componentDidMount() {
         fetch("/api/product/" + this.state.id).then(res => res.json()).then(
             (result) => {
+                console.log(result);
                 document.title = result.name;
                 this.setState({
                     isLoaded: true,

@@ -27,6 +27,8 @@ func main() {
 	router.POST("/api/login", api.PostLogin)
 	router.GET("/api/admin/products", api.Auth(api.GetAllProducts))
 	router.GET("/api/admin/product/:name", api.Auth(api.GetAllProduct))
+	router.GET("/api/admin/stocks/:name", api.Auth(api.GetStocks))
+	router.PUT("/api/admin/stock/:name", api.Auth(api.PutStock))
 
 	// Pages
 	router.GET("/", api.Home)

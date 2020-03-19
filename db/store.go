@@ -50,9 +50,9 @@ func GetProduct(id string, p bool) (*Product, error) {
 	return &product, err
 }
 
-func GetProductId(i string) (int, error) {
+func GetProductId(identifier string) (int, error) {
 	var id int
-	err := db.QueryRow("SELECT productid FROM products WHERE identifier=$1", i).Scan(&id)
+	err := db.QueryRow("SELECT productid FROM products WHERE identifier=$1", identifier).Scan(&id)
 	return id, err
 }
 
@@ -63,7 +63,7 @@ func GetProducts(p bool) *[]ProductThumbnail {
 	if p {
 		rows, _ = db.Query("SELECT productid, name, thumbnail, identifier FROM products WHERE public=TRUE ORDER BY name")
 	} else {
-		rows, _ = db.Query("SELECT productid, name, thumbnail, identifier FROM products ORDER BY NAME")
+		rows, _ = db.Query("SELECT productid, name, thumbnail, identifier FROM products ORDER BY created DESC")
 	}
 	defer rows.Close()
 
