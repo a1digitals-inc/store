@@ -83,7 +83,7 @@ func UpdateProduct(c *gin.Context) {
 	} else {
 		thumbnailExtension := filepath.Ext(thumbnailFile.Filename)
 		thumbnailPath = "/static/images/" + identifier + "-thumbnail" + thumbnailExtension
-		err = c.SaveUploadedFile(thumbnailFile, "."+thumbnailPath)
+		err = CompressAndSaveFile(thumbnailFile, "."+thumbnailPath)
 		if err != nil {
 			c.JSON(500, gin.H{"message": "Error saving thumbnail"})
 			return
@@ -103,7 +103,7 @@ func UpdateProduct(c *gin.Context) {
 		for i, imageFile := range imageFiles {
 			imageExtension := filepath.Ext(imageFile.Filename)
 			image := "/static/images/" + identifier + "-" + strconv.Itoa(i) + imageExtension
-			err = c.SaveUploadedFile(imageFile, "."+image)
+			err = CompressAndSaveFile(imageFile, "."+image)
 			if err != nil {
 				c.JSON(500, gin.H{"message": "Error saving images"})
 				return
