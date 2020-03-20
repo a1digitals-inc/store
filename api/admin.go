@@ -8,31 +8,10 @@ import (
 	"strings"
 )
 
-func Dashboard(c *gin.Context) {
-	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "dashboard",
-		"bundle": "dashboard",
-	})
-}
-
-func AdminProducts(c *gin.Context) {
-	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "store products",
-		"bundle": "adminproducts",
-	})
-}
-
-func AdminProduct(c *gin.Context) {
-	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "new product",
-		"bundle": "adminproduct",
-	})
-}
-
 func GetAllProducts(c *gin.Context) {
 	// Gets all products including private products
 	products := db.GetProducts(false)
-	c.JSON(200, products)
+	c.JSON(200, gin.H{"message": products})
 }
 
 func GetAllProduct(c *gin.Context) {
@@ -42,7 +21,7 @@ func GetAllProduct(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Product not found"})
 		return
 	}
-	c.JSON(200, product)
+	c.JSON(200, gin.H{"message": product})
 }
 
 func UpdateProduct(c *gin.Context) {

@@ -1,28 +1,12 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+	"github.com/sergiosegrera/store/models"
+)
 
-type Product struct {
-	Id          int      `json:"id"`
-	Name        string   `json:"name"`
-	Thumbnail   string   `json:"thumbnail"`
-	Images      []string `json:"images"`
-	Description string   `json:"description"`
-	Options     []string `json:"options"`
-	Price       int      `json:"price"`
-	Discount    float32  `json:"discount"`
-	Public      bool     `json:"public"`
-}
-
-type ProductThumbnail struct {
-	Identifier string `json:"identifier"`
-	Name       string `json:"name"`
-	Thumbnail  string `json:"thumbnail"`
-	Soldout    bool   `json:"soldout"`
-}
-
-func GetProduct(id string, p bool) (*Product, error) {
-	var product Product
+func GetProduct(id string, p bool) (*models.Product, error) {
+	var product models.Product
 	var err error
 	if p {
 		err = db.QueryRow("SELECT productid, name, description, price, discount, public, thumbnail FROM products WHERE identifier=$1 AND public=TRUE", id).Scan(&product.Id, &product.Name, &product.Description, &product.Price, &product.Discount, &product.Public, &product.Thumbnail)
@@ -56,8 +40,8 @@ func GetProductId(identifier string) (int, error) {
 	return id, err
 }
 
-func GetProducts(p bool) *[]ProductThumbnail {
-	var products []ProductThumbnail
+func GetProducts(p bool) *[]models.ProductThumbnail {
+	var products []models.ProductThumbnail
 
 	var rows *sql.Rows
 	if p {
@@ -68,7 +52,7 @@ func GetProducts(p bool) *[]ProductThumbnail {
 	defer rows.Close()
 
 	for rows.Next() {
-		var product ProductThumbnail
+		var product models.ProductThumbnail
 		var id int
 		rows.Scan(&id, &product.Name, &product.Thumbnail, &product.Identifier)
 

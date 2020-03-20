@@ -20,7 +20,6 @@ func main() {
 	router.LoadHTMLGlob("./views/*.tmpl")
 	router.Static("/static", "./static")
 
-	// API
 	router.GET("/api/products", api.GetProducts)
 	router.GET("/api/product/:name", api.GetProduct)
 	router.PUT("/api/product", api.Auth(api.UpdateProduct))
@@ -29,19 +28,6 @@ func main() {
 	router.GET("/api/admin/product/:name", api.Auth(api.GetAllProduct))
 	router.GET("/api/admin/stocks/:name", api.Auth(api.GetStocks))
 	router.PUT("/api/admin/stock/:name", api.Auth(api.PutStock))
-
-	// Pages
-	router.GET("/", api.Home)
-	router.GET("/webstore", api.Store)
-	router.GET("/product/:name", api.Product)
-
-	// Admin Pages
-	router.GET("/login", api.Login)
-
-	router.GET("/dashboard", api.Auth(api.Dashboard))
-	router.GET("/dashboard/products", api.Auth(api.AdminProducts))
-	router.GET("/dashboard/product", api.Auth(api.AdminProduct))
-	router.GET("/dashboard/product/:name", api.Auth(api.AdminProduct))
 
 	router.Run(":" + port)
 }

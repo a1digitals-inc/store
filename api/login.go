@@ -11,13 +11,6 @@ import (
 	"time"
 )
 
-func Login(c *gin.Context) {
-	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "login",
-		"bundle": "login",
-	})
-}
-
 func PostLogin(c *gin.Context) {
 	attempt := c.PostForm("password")
 	password := db.GetPassword()
@@ -35,7 +28,7 @@ func PostLogin(c *gin.Context) {
 	} else {
 		err := bcrypt.CompareHashAndPassword([]byte(password), []byte(attempt))
 		if err != nil {
-			c.JSON(200, gin.H{"valid": false})
+			c.JSON(200, gin.H{"message": false})
 			return
 		}
 		expiration := time.Now().Add(30 * time.Minute).Unix()
@@ -48,7 +41,7 @@ func PostLogin(c *gin.Context) {
 			log.Println(err)
 		}
 		c.SetCookie("token", tokenString, 1800, "/", os.Getenv("DOMAIN"), false, true)
-		c.JSON(200, gin.H{"valid": true})
+		c.JSON(200, gin.H{"message": true})
 	}
 }
 

@@ -1,21 +1,18 @@
 package db
 
-import "errors"
+import (
+	"errors"
+	"github.com/sergiosegrera/store/models"
+)
 
-type Stock struct {
-	ProductId int    `json:"-"`
-	Option    string `json:"option"`
-	Quantity  int    `json:"quantity"`
-}
-
-func GetStocks(identifier string) (*[]Stock, error) {
-	var stocks []Stock
+func GetStocks(identifier string) (*[]models.Stock, error) {
+	var stocks []models.Stock
 
 	rows, err := db.Query("SELECT option, quantity FROM products INNER JOIN productstock USING(productid) WHERE identifier=$1", identifier)
 
 	defer rows.Close()
 	for rows.Next() {
-		var stock Stock
+		var stock models.Stock
 		rows.Scan(&stock.Option, &stock.Quantity)
 		stocks = append(stocks, stock)
 	}

@@ -19,23 +19,9 @@ func init() {
 	}
 }
 
-func Store(c *gin.Context) {
-	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "store",
-		"bundle": "store",
-	})
-}
-
-func Product(c *gin.Context) {
-	c.HTML(200, "index.tmpl", gin.H{
-		"title":  "loading...",
-		"bundle": "product",
-	})
-}
-
 func GetProducts(c *gin.Context) {
 	products := db.GetProducts(true)
-	c.JSON(200, products)
+	c.JSON(200, gin.H{"message": products})
 }
 
 func GetProduct(c *gin.Context) {
@@ -44,5 +30,5 @@ func GetProduct(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Product not found"})
 		return
 	}
-	c.JSON(200, product)
+	c.JSON(200, gin.H{"message": product})
 }

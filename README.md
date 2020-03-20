@@ -6,10 +6,7 @@ Store is an online e-commerce web application designed for small online stores.
 /api -- Handlers
 /cmd -- Main file
 /db -- Database
-/views -- HTML templates
-/src -- Webpack entrypoints
-/src/components -- React Components
-/static -- .js bundles
+/models
 ```
 
 ## Endpoints
@@ -28,9 +25,7 @@ PUT /api/admin/stock/:name -- Auth required
 ```
 
 ## TODO
-* Separate models
 * General code cleanup
-* Separate backend and frontend
 * Add product stock manager
 * Add shopping cart
 * Add purchasing
