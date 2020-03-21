@@ -18,6 +18,7 @@ POST /api/login
 GET /api/admin/products -- Auth required
 GET /api/admin/product/:name -- Auth required
 POST /api/cart
+POST /api/checkout
 ```
 ### TODO
 ```
@@ -27,6 +28,7 @@ PUT /api/admin/stock/:name -- Auth required
 
 ## TODO
 * General code cleanup
-* Add product stock manager
-* Add shopping cart
-* Add purchasing
+* Add product stock manager endpoint
+* Add image upload endpoint
+* Replace form data endpoints to json
+* Add checkout confirm/cancel endpoint

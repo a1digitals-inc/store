@@ -22,6 +22,9 @@ func main() {
 	router.GET("/api/products", api.GetProducts)
 	router.GET("/api/product/:name", api.GetProduct)
 	router.POST("/api/cart", api.PostCart)
+	// TODO
+	router.POST("/api/checkout", api.PostCheckout)
+	// router.POST("/api/confirm", api.PostConfirm)
 
 	// Admin
 	router.POST("/api/login", api.PostLogin)
