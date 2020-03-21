@@ -17,6 +17,7 @@ PUT /api/product -- Auth required
 POST /api/login
 GET /api/admin/products -- Auth required
 GET /api/admin/product/:name -- Auth required
+POST /api/cart
 ```
 ### TODO
 ```
