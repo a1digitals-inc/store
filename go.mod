@@ -2,6 +2,8 @@ module github.com/sergiosegrera/store
 
 go 1.13
 
+replace github.com/plutov/paypal/v3 => ../paypal
+
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/gzip v0.0.1

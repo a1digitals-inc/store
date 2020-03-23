@@ -1,13 +1,13 @@
 package models
 
 type Client struct {
-	Id              string  `json:"id,omitempty"`
-	Firstname       string  `json:"firstname"`
-	Lastname        string  `json:"lastname"`
-	Email           string  `json:"email"`
-	Phone           string  `json:"phone"`
-	ShippingAddress Address `json:"shippingAddress,omitempty"`
-	BillingAddress  Address `json:"billingAddress,omitempty"`
+	Id              string   `json:"id,omitempty"`
+	Firstname       string   `json:"firstname"`
+	Lastname        string   `json:"lastname"`
+	Email           string   `json:"email"`
+	Phone           string   `json:"phone"`
+	ShippingAddress *Address `json:"shippingAddress,omitempty"`
+	BillingAddress  *Address `json:"billingAddress,omitempty"`
 }
 
 type Address struct {

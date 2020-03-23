@@ -24,7 +24,8 @@ func main() {
 	router.POST("/api/cart", api.PostCart)
 	// TODO
 	router.POST("/api/checkout", api.PostCheckout)
-	// router.POST("/api/confirm", api.PostConfirm)
+	router.POST("/api/order/confirm", api.PostConfirm)
+	// router.POST("/api/order/cancel")
 
 	// Admin
 	router.POST("/api/login", api.PostLogin)
