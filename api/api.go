@@ -2,14 +2,13 @@ package api
 
 import (
 	"database/sql"
-	"github.com/plutov/paypal/v3"
 	"github.com/sergiosegrera/store/db"
+	"github.com/stripe/stripe-go"
 	"os"
 )
 
 var (
 	dbc *sql.DB
-	pp  *paypal.Client
 )
 
 func init() {
@@ -20,15 +19,10 @@ func init() {
 		panic(err)
 	}
 
-	pp, err = paypal.NewClient(os.Getenv("PAYPAL_CLIENT"), os.Getenv("PAYPAL_SECRET"), paypal.APIBaseSandBox)
+	stripe.Key = os.Getenv("STRIPE_SECRET")
 
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = pp.GetAccessToken()
-
-	if err != nil {
-		panic(err)
-	}
 }

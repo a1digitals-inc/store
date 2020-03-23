@@ -13,6 +13,6 @@ func PostCart(c *gin.Context) {
 		c.JSON(400, gin.H{"message": "Could not parse cart object"})
 		return
 	}
-	checkedCart := db.CheckCart(cart)
+	checkedCart := db.CheckCart(&cart)
 	c.JSON(200, gin.H{"message": checkedCart})
 }

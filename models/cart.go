@@ -3,8 +3,8 @@ package models
 type Cart struct {
 	Products      []CartProduct `json:"cartProducts"`
 	PromotionCode string        `json:"promotionCode"`
-	SubTotal      float32       `json:"subtotal"`
-	Total         float32       `json:"total"`
+	SubTotal      int64         `json:"subtotal"`
+	Total         int64         `json:"total"`
 }
 
 type CartProduct struct {

@@ -31,4 +31,4 @@ PUT /api/admin/stock/:name -- Auth required
 * Add product stock manager endpoint
 * Add image upload endpoint
 * Replace form data endpoints to json
-* Add checkout cancel endpoint
+* Add checkout confirm and cancel endpoint
