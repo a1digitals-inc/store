@@ -5,30 +5,33 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/sergiosegrera/store/db"
+	"github.com/sergiosegrera/store/models"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 	"os"
 	"time"
 )
 
 func PostLogin(c *gin.Context) {
-	attempt := c.PostForm("password")
+	var login models.Login
+	c.Bind(&login)
 	password := db.GetPassword()
 	// If there is no password in the database make the attempt the password
 	if password == "" {
-		hash, err := bcrypt.GenerateFromPassword([]byte(attempt), bcrypt.MinCost)
+		hash, err := bcrypt.GenerateFromPassword([]byte(login.Password), bcrypt.MinCost)
 		if err != nil {
-			log.Println(err)
+			c.JSON(500, gin.H{"message": "Internal server error"})
+			return
 		}
 		err = db.SetPassword(string(hash))
 		if err != nil {
-			log.Println(err)
+			c.JSON(500, gin.H{"message": "Internal server error"})
+			return
 		}
 		c.JSON(200, gin.H{"message": "Password created"})
 	} else {
-		err := bcrypt.CompareHashAndPassword([]byte(password), []byte(attempt))
+		err := bcrypt.CompareHashAndPassword([]byte(password), []byte(login.Password))
 		if err != nil {
-			c.JSON(200, gin.H{"message": false})
+			c.JSON(401, gin.H{"message": "Wrong password"})
 			return
 		}
 		expiration := time.Now().Add(30 * time.Minute).Unix()
@@ -38,10 +41,11 @@ func PostLogin(c *gin.Context) {
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 		tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 		if err != nil {
-			log.Println(err)
+			c.JSON(500, gin.H{"message": "Internal server error"})
+			return
 		}
-		c.SetCookie("token", tokenString, 1800, "/", os.Getenv("DOMAIN"), false, true)
-		c.JSON(200, gin.H{"message": true})
+		c.SetCookie("token", tokenString, 1800, "/", os.Getenv("DOMAIN"), false, false)
+		c.JSON(200, gin.H{"message": "Authenticated"})
 	}
 }
 

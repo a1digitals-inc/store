@@ -67,45 +67,45 @@ func StartOrder(order *models.Order) error {
 	return err
 }
 
-//func ReserveOrder(order *models.Order) error {
-//	err := db.QueryRow("SELECT orderid FROM orders WHERE token=$1 AND status='Created'", order.Token).Scan(&order.Id)
-//	if err != nil {
-//		return err
-//	}
-//
-//	rows, err := db.Query("SELECT productid, quantity, option FROM orderitems WHERE orderid=$1", order.Id)
-//	if err != nil {
-//		return err
-//	}
-//
-//	defer rows.Close()
-//
-//	for rows.Next() {
-//		var productid int
-//		var quantity int
-//		var option string
-//		rows.Scan(&productid, &quantity, &option)
-//		_, err := db.Exec(
-//			"UPDATE productstock SET quantity=quantity-$2 WHERE quantity-$2 >= 0 AND option=$3 AND quantity != 0 AND productid=$1",
-//			productid,
-//			quantity,
-//			option,
-//		)
-//		if err != nil {
-//			return err
-//		}
-//	}
-//
-//	_, err = db.Exec("UPDATE orders SET status='Reserved' WHERE orderid=$1", order.Id)
-//
-//	return err
-//}
-//
-//func CompleteOrder(order *models.Order) error {
-//	var err error
-//	return err
-//}
-//
-//func CancelOrder(order *models.Order) {
-//
-//}
+func ReserveOrder(order *models.Order) error {
+	err := db.QueryRow("SELECT orderid FROM orders WHERE orderid=$1 AND status='Created'", order.Id).Scan(&order.Id)
+	if err != nil {
+		return err
+	}
+
+	rows, err := db.Query("SELECT productid, quantity, option FROM orderitems WHERE orderid=$1", order.Id)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var productid int
+		var quantity int
+		var option string
+		rows.Scan(&productid, &quantity, &option)
+		_, err := db.Exec(
+			"UPDATE productstock SET quantity=quantity-$2 WHERE quantity-$2 >= 0 AND option=$3 AND quantity != 0 AND productid=$1",
+			productid,
+			quantity,
+			option,
+		)
+		if err != nil {
+			return err
+		}
+	}
+
+	_, err = db.Exec("UPDATE orders SET status='Reserved' WHERE orderid=$1", order.Id)
+
+	return err
+}
+
+func CompleteOrder(order *models.Order) error {
+	var err error
+	return err
+}
+
+func CancelOrder(order *models.Order) {
+
+}

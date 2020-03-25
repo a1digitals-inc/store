@@ -25,6 +25,7 @@ func GetAllProduct(c *gin.Context) {
 }
 
 func UpdateProduct(c *gin.Context) {
+	// TODO: Use json instead of form and add image upload endpoint
 	name := c.PostForm("name")
 	if name == "" {
 		c.JSON(422, gin.H{"message": "Invalid name"})

@@ -27,12 +27,11 @@ func PostCheckout(c *gin.Context) {
 	order.OrderCart = db.CheckCart(order.OrderCart)
 
 	params := &stripe.PaymentIntentParams{
-		Amount:   stripe.Int64(order.OrderCart.Total),
-		Currency: stripe.String(string(stripe.CurrencyCAD)),
-		PaymentMethodTypes: stripe.StringSlice([]string{
-			"card",
-		}),
-		ReceiptEmail: stripe.String(order.OrderClient.Email),
+		Amount:             stripe.Int64(order.OrderCart.Total),
+		Currency:           stripe.String(string(stripe.CurrencyCAD)),
+		PaymentMethod:      stripe.String(order.PaymentMethodId),
+		ConfirmationMethod: stripe.String(string(stripe.PaymentIntentConfirmationMethodManual)),
+		ReceiptEmail:       stripe.String(order.OrderClient.Email),
 		Shipping: &stripe.ShippingDetailsParams{
 			Address: &stripe.AddressParams{
 				City:       stripe.String(order.OrderClient.ShippingAddress.City),
@@ -62,5 +61,25 @@ func PostCheckout(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": intent.ClientSecret})
+	err = db.ReserveOrder(&order)
+	if err != nil {
+		// TODO: Unreserve order
+		c.JSON(500, gin.H{"message": "Could not reserver order"})
+		return
+	}
+
+	pi, err := paymentintent.Confirm(
+		intent.ClientSecret,
+		&stripe.PaymentIntentConfirmParams{
+			PaymentMethod: stripe.String(order.PaymentMethodId),
+		},
+	)
+
+	if err != nil {
+		// TODO: Unreserve order
+		c.JSON(500, gin.H{"message": "Payment did not succeed"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": pi.Status})
 }
