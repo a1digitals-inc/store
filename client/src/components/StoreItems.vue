@@ -1,21 +1,27 @@
 <template>
-    <div>
+    <div v-if="loaded">
         <StoreItem v-for="item in items" :key="item.identifier" :item="item" />
+    </div>
+    <div v-else>
+        <Spinner />
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import StoreItem from "@/components/StoreItem.vue"
+import Spinner from "@/components/Spinner.vue"
 
 export default {
     name: "StoreItems",
     components: {
-        StoreItem   
+        StoreItem,
+        Spinner
     },
     data () {
         return {
-            items: []
+            items: [],
+            loaded: false
         }
     },
     created () {
@@ -23,9 +29,10 @@ export default {
     },
     methods: {
         fetchItems() {
-            axios.get("http://localhost:8080/api/products")
+            axios.get("/api/products")
             .then(response => {
                 this.items = response.data.message
+                this.loaded = true
             })
             .catch(error => console.log(error))
         }

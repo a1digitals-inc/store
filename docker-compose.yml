@@ -2,7 +2,7 @@ version: '3'
 services:
     web:
         build: .
-        ports: 
+        ports:
             - "80:80"
         env_file:
-            - config.env
+            - ./config.env

@@ -28,3 +28,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+img {
+    max-width: 500px;
+    width: 80%;
+}
+</style>

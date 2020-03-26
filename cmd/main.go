@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/sergiosegrera/store/api"
 	"os"
@@ -16,12 +16,8 @@ func main() {
 
 	router := gin.Default()
 
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:8081"}
-	config.AllowCredentials = true
-
-	router.Use(cors.New(config))
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
+	router.Use(static.Serve("/", static.LocalFile("./client/dist", false)))
 
 	router.Static("/static", "./static/")
 
@@ -42,6 +38,10 @@ func main() {
 	router.GET("/api/admin/product/:name", api.Auth(api.GetAllProduct))
 	router.GET("/api/admin/stocks/:name", api.Auth(api.GetStocks))
 	router.PUT("/api/admin/stock/:name", api.Auth(api.PutStock))
+
+	router.NoRoute(func(c *gin.Context) {
+		c.File("./client/dist/index.html")
+	})
 
 	router.Run(":" + port)
 }
