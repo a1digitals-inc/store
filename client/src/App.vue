@@ -17,11 +17,17 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Open+Sans&display=swap" rel="stylesheet">
 
 html {
+    font-family: 'Libre Baskerville', serif;
+}
+
+p {
     font-family: 'Open Sans', sans-serif;
 }
+
+
 a {
     color: black;
     text-decoration: none;

@@ -19,6 +19,7 @@
         <div v-else>
             <input class="btn" type="button" value="Soldout" disabled />
         </div>
+        <router-link to="/webstore">Back to store</router-link>
     </div>
     <div v-else>
         <Spinner />
@@ -42,7 +43,7 @@ export default {
         return {
             product: null,
             loaded: false,
-            option: "",
+            option: null,
         }
     },
     created () {
@@ -53,11 +54,19 @@ export default {
             axios.get("/api/product/" + this.identifier)
             .then(response => {
                 this.product = response.data.message
+                if (this.product.options) { 
+                    this.option = this.product.options[0]
+                }
                 this.loaded = true
             })
         },
         addToCart() {
-            console.log(this.option)
+            const product = {
+                "identifier": this.identifier,
+                "option": this.option,
+                "quantity": 1,
+            }
+            this.$store.commit("addToCart", product)
         }
     }
 }
@@ -83,10 +92,25 @@ p {
     border: 1px solid black;
     padding: 10px;
     text-align: center;
+    margin: 20px;
 }
 
 .btn:hover {
     background-color: white;
     color: black;
+}
+
+.btn:disabled,.btn[disabled] {
+    background-color: grey;
+}
+
+
+select {
+    display: block;
+    margin: auto;
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    padding: 10px;
 }
 </style>
