@@ -16,7 +16,7 @@ export default {
   },
   methods: {
       submit() {
-          axios("http://localhost:8080/api/login", {method: "post", data: {password: this.password}, withCredentials: true})
+          axios("/api/login", {method: "post", data: {password: this.password}, withCredentials: true})
           .then(response => {
               if (response.data.message == "Authenticated") {     
                 this.$router.push("/dashboard")

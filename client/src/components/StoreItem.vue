@@ -1,7 +1,7 @@
 <template>
     <div>
         <router-link :to="'/product/' + item.identifier">
-            <img :src="item.thumbnail" />
+            <img :src="item.thumbnail" loading="lazy" />
             <p>{{ item.name }}</p>
             <p v-if="item.soldout"><strong>Soldout</strong></p>
         </router-link>

@@ -1,25 +1,29 @@
 <template>
     <div v-if="loaded">
-        <ImageCarousel :images="this.product.images" />
-        <h2>{{ this.product.name }}</h2>
-        <p>{{ this.product.description }}</p>
-        <div v-if="product.discount < 1">
-            <p class="strike">{{ this.product.price }} $</p>
-            <p><strong>{{ this.product.price * this.product.discount }} $</strong></p>
+        <div class="row j-center m-5">
+            <ImageCarousel :images="this.product.images" />
+            <div>
+                <h2>{{ this.product.name }}</h2>
+                <p>{{ this.product.description }}</p>
+                <div v-if="product.discount < 1">
+                    <p class="strike">{{ this.product.price }} $</p>
+                    <p><strong>{{ this.product.price * this.product.discount }} $</strong></p>
+                </div>
+                <div v-else>
+                    <p>{{ this.product.price }} $</p>
+                </div>
+                <div v-if="product.options">
+                    <select v-model="option">
+                        <option v-for="option in product.options" :key="option">{{ option }}</option>
+                    </select>
+                    <input class="btn" type="button" value="Add to cart" @click="addToCart" />
+                </div>
+                <div v-else>
+                    <input class="btn" type="button" value="Soldout" disabled />
+                </div>
+            </div>
         </div>
-        <div v-else>
-            <p>{{ this.product.price }} $</p>
-        </div>
-        <div v-if="product.options">
-            <select v-model="option">
-                <option v-for="option in product.options" :key="option">{{ option }}</option>
-            </select>
-            <input class="btn" type="button" value="Add to cart" @click="addToCart" />
-        </div>
-        <div v-else>
-            <input class="btn" type="button" value="Soldout" disabled />
-        </div>
-        <router-link to="/webstore">Back to store</router-link>
+        <router-link to="/webstore" class="m-5">Back to store</router-link>
     </div>
     <div v-else>
         <Spinner />
@@ -100,8 +104,10 @@ p {
     color: black;
 }
 
-.btn:disabled,.btn[disabled] {
+.btn:disabled,.btn[disabled], .btn[disabled]:hover {
+    color: white;
     background-color: grey;
+    border: 1px solid grey;
 }
 
 

@@ -17,7 +17,8 @@ export default {
 </script>
 
 <style>
-<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Open+Sans&display=swap" rel="stylesheet">
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Open+Sans&display=swap');
+@import "./main.css";
 
 html {
     font-family: 'Libre Baskerville', serif;
@@ -35,5 +36,17 @@ a {
 
 a:visited {
     color: black;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.m-3 {
+    margin: 1em;
+}
+
+.m-5 {
+    margin: 3em;
 }
 </style>

@@ -5,16 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        cart: [],
-        length: 0 
+        cart: []
     },
     mutations: {
         initStore(state) {
             if (localStorage.getItem("cart")) {
                 state.cart = JSON.parse(localStorage.getItem("cart"))
-                
-                console.log(state.cart)
             }
+        },
+        setCart(state, cartProducts) {
+            if (cartProducts != null) {
+                state.cart = cartProducts
+            } else {
+                state.cart = []
+            }
+            localStorage.setItem("cart", JSON.stringify(state.cart))    
         },
         addToCart(state, product) {
             var exists = false
@@ -39,6 +44,9 @@ export default new Vuex.Store({
                 }
             }
             return count
+        },
+        getCart(state) {
+            return state.cart
         }
     }
 })

@@ -1,19 +1,19 @@
 <template>
     <div>
-        <Cart />
+        <CartPreview />
         <ProductInformation :identifier="$route.params.name"/> 
     </div>
 </template>
 
 <script>
 import ProductInformation from "@/components/ProductInformation.vue"
-import Cart from "@/components/Cart.vue"
+import CartPreview from "@/components/CartPreview.vue"
 
 export default {
     name: 'Webstore',
     components: { 
         ProductInformation,
-        Cart
+        CartPreview
     }
 }
 </script>

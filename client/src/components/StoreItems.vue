@@ -1,6 +1,11 @@
 <template>
     <div v-if="loaded">
-        <StoreItem v-for="item in items" :key="item.identifier" :item="item" />
+        <div v-if="products.length > 0">
+            <StoreItem v-for="product in products" :key="product.identifier" :item="product" />
+        </div>
+        <div v-else>
+            <h2>There are no products to show</h2>
+        </div>
     </div>
     <div v-else>
         <Spinner />
@@ -20,7 +25,7 @@ export default {
     },
     data () {
         return {
-            items: [],
+            products: [],
             loaded: false
         }
     },
@@ -31,7 +36,7 @@ export default {
         fetchItems() {
             axios.get("/api/products")
             .then(response => {
-                this.items = response.data.message
+                this.products = response.data.message
                 this.loaded = true
             })
             .catch(error => console.log(error))
