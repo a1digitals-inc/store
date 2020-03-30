@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import axios from 'axios'
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,21 @@ const routes = [
         path: "/cart",
         name: "Cart",
         component: () => import(/* webpackChunkName: "cart" */ '../views/Cart.vue')
+    },
+    {
+        path: "/dashboard",
+        name: "Dashboard",
+        beforeEnter: (to, from, next) => {
+            axios("/api/refresh", {method:"post", withCredentials: true})
+                .then(response => {
+                    if (response.status == 200) {
+                        next()
+                    } else {
+                        next(false)
+                    }
+                })
+        },
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
     }
 ]
 

@@ -1,6 +1,6 @@
 <template>
     <div v-if="loaded">
-        <div class="row j-center m-5">
+        <div class="row j-center my-5">
             <ImageCarousel :images="this.product.images" />
             <div>
                 <h2>{{ this.product.name }}</h2>
@@ -23,7 +23,9 @@
                 </div>
             </div>
         </div>
-        <router-link to="/webstore" class="m-5">Back to store</router-link>
+        <div class="m-5">
+            <router-link to="/webstore">Back to store</router-link>
+        </div>
     </div>
     <div v-else>
         <Spinner />
@@ -89,27 +91,6 @@ p {
 .strike {
     text-decoration: line-through;
 }
-
-.btn {
-    background-color: black;
-    color: white;
-    border: 1px solid black;
-    padding: 10px;
-    text-align: center;
-    margin: 20px;
-}
-
-.btn:hover {
-    background-color: white;
-    color: black;
-}
-
-.btn:disabled,.btn[disabled], .btn[disabled]:hover {
-    color: white;
-    background-color: grey;
-    border: 1px solid grey;
-}
-
 
 select {
     display: block;

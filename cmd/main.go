@@ -31,6 +31,7 @@ func main() {
 
 	// Admin
 	router.POST("/api/login", api.PostLogin)
+	router.POST("/api/refresh", api.PostRefresh)
 
 	// Dashboard
 	router.GET("/api/admin/products", api.Auth(api.GetAllProducts))

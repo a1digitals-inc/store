@@ -42,11 +42,23 @@ a:visited {
     text-align: center;
 }
 
-.m-3 {
-    margin: 1em;
+.btn {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    margin: 20px;
 }
 
-.m-5 {
-    margin: 3em;
+.btn:hover {
+    background-color: white;
+    color: black;
+} 
+
+.btn:disabled,.btn[disabled],.btn[disabled]:hover {
+    color: white;
+    background-color: grey;
+    border: 1px solid grey;
 }
 </style>
