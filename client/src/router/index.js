@@ -48,11 +48,16 @@ const routes = [
                     if (response.status == 200) {
                         next()
                     } else {
-                        next(false)
+                        next("/login")
                     }
                 })
         },
         component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+    },
+    {
+        path: "*",
+        name: "NotFound",
+        component: () => import(/* webpackChunkName: "notFound" */ '../views/NotFound.vue')
     }
 ]
 
