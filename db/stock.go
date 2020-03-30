@@ -5,7 +5,7 @@ import (
 	"github.com/sergiosegrera/store/models"
 )
 
-func GetStocks(identifier string) (*[]models.Stock, error) {
+func GetStocks(identifier string) ([]models.Stock, error) {
 	var stocks []models.Stock
 
 	rows, err := db.Query("SELECT option, quantity FROM products INNER JOIN productstock USING(productid) WHERE identifier=$1", identifier)
@@ -17,16 +17,16 @@ func GetStocks(identifier string) (*[]models.Stock, error) {
 		stocks = append(stocks, stock)
 	}
 
-	return &stocks, err
+	return stocks, err
 }
 
-func InsertStock(id int, option string, quantity string) error {
-	_, err := db.Exec("INSERT INTO productstock VALUES($1, $2, $3)", id, option, quantity)
+func InsertStock(stock *models.Stock) error {
+	_, err := db.Exec("INSERT INTO productstock VALUES($1, $2, $3)", stock.ProductId, stock.Option, stock.Quantity)
 	return err
 }
 
-func UpdateStock(id int, option string, quantity string) error {
-	res, err := db.Exec("UPDATE productstock SET quantity=$3 WHERE productid=$1 AND option=$2", id, option, quantity)
+func UpdateStock(stock *models.Stock) error {
+	res, err := db.Exec("UPDATE productstock SET quantity=$3 WHERE productid=$1 AND option=$2", stock.ProductId, stock.Option, stock.Quantity)
 	number, err := res.RowsAffected()
 	if number == 0 {
 		return errors.New("db: no row to update")

@@ -30,21 +30,21 @@ type Address struct {
 func ValidateClient(client *Client) []string {
 	var errs []string
 	if client.Firstname == "" {
-		errs = append(errs, "Firstname is required")
+		errs = append(errs, "A firstname is required")
 	}
 
 	if client.Lastname == "" {
-		errs = append(errs, "Lastname is required")
+		errs = append(errs, "A lastname is required")
 	}
 
 	if client.Email == "" {
-		errs = append(errs, "Email is required")
+		errs = append(errs, "An email is required")
 	} else if !emailRegex.MatchString(client.Email) {
 		errs = append(errs, "Email is invalid")
 	}
 
 	if client.Phone == "" {
-		errs = append(errs, "Phone number is required")
+		errs = append(errs, "A phone number is required")
 	}
 
 	errs = append(errs, ValidateAddress(client.ShippingAddress)...)
@@ -56,25 +56,25 @@ func ValidateAddress(address *Address) []string {
 	var errs []string
 
 	if address.Country == "" {
-		errs = append(errs, "Country is required")
+		errs = append(errs, "A country is required")
 	} else if len(address.Country) != 2 {
 		errs = append(errs, "Invalid Country code")
 	}
 
 	if address.AddressLine1 == "" {
-		errs = append(errs, "Address Line 1 is required")
+		errs = append(errs, "An address line 1 is required")
 	}
 
 	if address.City == "" {
-		errs = append(errs, "City is required")
+		errs = append(errs, "A city is required")
 	}
 
 	if address.State == "" {
-		errs = append(errs, "Region is required")
+		errs = append(errs, "A region is required")
 	}
 
 	if address.Zip == "" {
-		errs = append(errs, "Area code is required")
+		errs = append(errs, "an area code is required")
 	}
 
 	return errs

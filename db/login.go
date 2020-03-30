@@ -13,6 +13,6 @@ func GetPassword() string {
 }
 
 func SetPassword(p string) error {
-	_, err := db.Exec("INSERT INTO settings VALUES (DEFAULT, 'password', $1)", p)
+	_, err := db.Exec("UPDATE settings SET value=$1 WHERE name='password'", p)
 	return err
 }

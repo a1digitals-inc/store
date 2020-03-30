@@ -31,13 +31,19 @@ func main() {
 
 	// Admin
 	router.POST("/api/login", api.PostLogin)
-	router.PUT("/api/product", api.Auth(api.UpdateProduct))
 
 	// Dashboard
 	router.GET("/api/admin/products", api.Auth(api.GetAllProducts))
+
 	router.GET("/api/admin/product/:name", api.Auth(api.GetAllProduct))
+	router.PUT("/api/admin/product", api.Auth(api.PutProduct))
+	router.POST("/api/admin/product", api.Auth(api.PostProduct))
+
+	router.POST("/api/admin/image", api.Auth(api.PostImage))
+
 	router.GET("/api/admin/stocks/:name", api.Auth(api.GetStocks))
-	router.PUT("/api/admin/stock/:name", api.Auth(api.PutStock))
+	router.PUT("/api/admin/stocks/:name", api.Auth(api.PutStock))
+	router.POST("/api/admin/stocks/:name", api.Auth(api.PostStock))
 
 	router.NoRoute(func(c *gin.Context) {
 		c.File("./client/dist/index.html")

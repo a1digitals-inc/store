@@ -1,3 +1,26 @@
+/* Minimal responsive css */
+
+/* Margin utilities */
+.m-0 {
+    margin: 0 !important;
+}
+
+.m-1 {
+    margin: 0.25em;
+}
+
+.m-2 {
+    margin: 0.5em;
+}
+
+.m-3 {
+    margin: 1em;
+}
+
+.m-4 {
+    margin: 1.5em;
+}
+
 .m-5 {
     margin: 3em;
 }
@@ -6,6 +29,30 @@
     margin: auto;
 }
 
+/* Padding utilities */
+
+.p-1 {
+    padding: 0.25em;
+}
+
+.p-2 {
+    padding: 0.5em;
+}
+
+.p-3 {
+    padding: 1em;
+}
+
+.p-4 {
+    padding: 1.5em;
+}
+
+.p-5 {
+    padding: 3em;
+}
+
+
+/* Width utilities */
 .w-100 {
     width: 100%;
 }
@@ -18,16 +65,16 @@
     width: 50%;
 }
 
+/* Flex layout */
+.row {
+    margin: auto;
+}
 
 @media(min-width:768px) {
     .row {
         display: flex;
         margin: auto;
     }
-}
-
-.row {
-    margin: auto;
 }
 
 .j-center {

@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/lithammer/shortuuid"
 	"github.com/sergiosegrera/store/db"
-	"path/filepath"
-	"strconv"
-	"strings"
+	"github.com/sergiosegrera/store/models"
+	"os"
 )
 
 func GetAllProducts(c *gin.Context) {
@@ -24,128 +24,72 @@ func GetAllProduct(c *gin.Context) {
 	c.JSON(200, gin.H{"message": product})
 }
 
-func UpdateProduct(c *gin.Context) {
-	// TODO: Use json instead of form and add image upload endpoint
-	name := c.PostForm("name")
-	if name == "" {
+func PutProduct(c *gin.Context) {
+	var product models.Product
+	err := c.BindJSON(&product)
+	if err != nil {
+		c.JSON(422, gin.H{"message": "Could not parse product"})
+	}
+
+	name := c.Param("name")
+
+	errs := models.ValidateProduct(&product)
+	if len(errs) > 0 {
+		c.JSON(422, gin.H{"message": errs})
+		return
+	}
+
+	oldImages, _ := db.GetImages(name)
+	for _, image := range oldImages {
+		os.Remove(image)
+	}
+
+	err = db.UpdateProduct(name, &product)
+	if err != nil {
+		c.JSON(422, gin.H{"message": "Could not update"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Product updated"})
+}
+
+func PostProduct(c *gin.Context) {
+	var product models.Product
+	err := c.BindJSON(&product)
+	if err != nil {
+		c.JSON(422, gin.H{"message": "Could not parse product"})
+		return
+	}
+
+	errs := models.ValidateProduct(&product)
+	if len(errs) > 0 {
+		c.JSON(422, gin.H{"message": errs})
+		return
+	}
+
+	err = db.InsertProduct(&product)
+	if err != nil {
+		c.JSON(500, gin.H{"message": "Internal server error"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Product created"})
+}
+
+func PostImage(c *gin.Context) {
+	id := shortuuid.New()
+	dest := "/static/images/" + id + ".jpg"
+	file, err := c.FormFile("image")
+	if err != nil {
 		c.JSON(422, gin.H{"message": "Invalid name"})
 		return
 	}
 
-	identifier := c.PostForm("identifier")
-	if identifier == "" || strings.ContainsAny(identifier, " /?$#") {
-		c.JSON(422, gin.H{"message": "Invalid identifier"})
+	err = CompressAndSaveFile(file, dest)
+	if err != nil {
+		c.JSON(500, gin.H{"message": "Internal server error"})
 		return
 	}
 
-	product, err := db.GetProduct(identifier, false)
-	exists := true
-	if err != nil {
-		exists = false
-	}
-
-	publicCheck := c.PostForm("public")
-	var public bool
-	if publicCheck == "on" {
-		public = true
-	} else {
-		public = false
-	}
-
-	// TODO: Limit thumbnail and images file size
-	thumbnailFile, err := c.FormFile("thumbnailFile")
-	var thumbnailPath string
-	if err != nil {
-		if !exists {
-			c.JSON(422, gin.H{"message": "Invalid thumbnail"})
-			return
-		}
-	} else {
-		thumbnailExtension := filepath.Ext(thumbnailFile.Filename)
-		thumbnailPath = "/static/images/" + identifier + "-thumbnail" + thumbnailExtension
-		err = CompressAndSaveFile(thumbnailFile, "."+thumbnailPath)
-		if err != nil {
-			c.JSON(500, gin.H{"message": "Error saving thumbnail"})
-			return
-		}
-		product.Thumbnail = thumbnailPath
-	}
-
-	form, err := c.MultipartForm()
-	imageFiles := form.File["imageFiles"]
-	var imagePaths []string
-	if err != nil {
-		if !exists {
-			c.JSON(422, gin.H{"message": "Invalid images"})
-			return
-		}
-	} else {
-		for i, imageFile := range imageFiles {
-			imageExtension := filepath.Ext(imageFile.Filename)
-			image := "/static/images/" + identifier + "-" + strconv.Itoa(i) + imageExtension
-			err = CompressAndSaveFile(imageFile, "."+image)
-			if err != nil {
-				c.JSON(500, gin.H{"message": "Error saving images"})
-				return
-			}
-			imagePaths = append(imagePaths, image)
-		}
-		product.Images = imagePaths
-	}
-
-	description := c.PostForm("description")
-
-	price := c.PostForm("price")
-	if price == "" {
-		c.JSON(422, gin.H{"message": "Invalid price"})
-		return
-	}
-
-	discount := c.PostForm("discount")
-	if discount == "" {
-		discount = "1"
-	}
-
-	if !exists {
-		err = db.InsertProduct(name, public, thumbnailPath, description, price, discount, identifier, imagePaths)
-		if err != nil {
-			c.JSON(500, gin.H{"message": err.Error()})
-			return
-		}
-		c.JSON(201, gin.H{"message": "Product created"})
-		return
-	}
-	err = db.UpdateProduct(product.Id, name, public, product.Thumbnail, description, price, discount, identifier, product.Images)
-	if err != nil {
-		c.JSON(500, gin.H{"message": err.Error()})
-		return
-	}
-	c.JSON(200, gin.H{"message": "Product updated"})
-}
-
-func GetStocks(c *gin.Context) {
-	identifier := c.Param("name")
-	stocks, _ := db.GetStocks(identifier)
-	c.JSON(200, gin.H{"message": stocks})
-}
-
-func PutStock(c *gin.Context) {
-	identifier := c.Param("name")
-	id, err := db.GetProductId(identifier)
-	if err != nil {
-		c.JSON(404, gin.H{"message": "Product not found"})
-	}
-	option := c.PostForm("option")
-	quantity := c.PostForm("quantity")
-	err = db.UpdateStock(id, option, quantity)
-	if err != nil {
-		err = db.InsertStock(id, option, quantity)
-		if err != nil {
-			c.JSON(500, gin.H{"message": "Internal server error"})
-			return
-		}
-		c.JSON(200, gin.H{"message": "Stock created"})
-		return
-	}
-	c.JSON(200, gin.H{"message": "Stock updated"})
+	c.JSON(200, gin.H{"message": dest})
 }
