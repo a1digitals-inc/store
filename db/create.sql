@@ -3,19 +3,19 @@ CREATE TABLE clients (
   firstname text,
   lastname text,
   email text,
-  created timestamptz
+  created timestamptz,
+  phone text
 );
 
-CREATE TABLE adresses (
-  adressid serial primary key,
+CREATE TABLE addresses (
+  addressid serial primary key,
   clientid integer references clients(clientid) not null,
   country text,
-  adresssline1 text,
-  adresssline2 text,
+  addresssline1 text,
+  addresssline2 text,
   city text,
   zip text,
-  state text,
-  phone text
+  state text
 );
 
 CREATE TABLE promotions (
@@ -36,7 +36,10 @@ CREATE TABLE products (
   price int,
   discount float(2),
   categoryid integer references categories(categoryid),
-  created timestamptz
+  created timestamptz,
+  thumnbnail text,
+  public boolean,
+  identifier text
 );
 
 CREATE TABLE orders (
@@ -46,14 +49,16 @@ CREATE TABLE orders (
   shippingid integer references adresses(adressid) not null,
   deliveryid integer references adresses(adressid) not null,
   status text,
-  created timestamptz
+  created timestamptz,
+  token text
 );
 
 CREATE TABLE orderitems (
   orderid integer references orders(orderid) not null,
   productid integer references products(productid) not null,
   productid integer references productstock(productstockid) not null,
-  quantity integer
+  quantity integer,
+  option text
 );
 
 CREATE TABLE productimages (
@@ -67,3 +72,11 @@ CREATE TABLE productstock (
   option text,
   quantity integer
 );
+
+CREATE TABLE settings (
+  settingid serial primary key,
+  name text,
+  value text
+);
+
+INSERT INTO settings VALUES(DEFAULT, 'password', '');

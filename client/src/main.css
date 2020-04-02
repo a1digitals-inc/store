@@ -104,6 +104,10 @@
     align-items: baseline;
 }
 
+.a-start {
+    align-items: start;
+}
+
 .col-1 {
     flex-basis: 10%;
 }

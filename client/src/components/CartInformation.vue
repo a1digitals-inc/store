@@ -4,7 +4,7 @@
             <div class="text-center m-5">
                 <h2>Your Cart</h2>
             </div>
-            <div class="row j-space-around a-center" v-for="product in cart.cartProducts" :key="product.identifier">
+            <div class="row j-space-around a-start" v-for="product in cart.cartProducts" :key="product.identifier">
                 <img :src="product.thumbnail" />
                 <div class="col-2">
                     <p><strong>{{ product.name }}</strong> - {{ product.option }}</p>
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-1">
                     <p>Quantity</p>
-                    <input class="m-2" type="number" v-model.number="product.quantity" min="0" step="1" />
+                    <input type="number" v-model.number="product.quantity" min="0" step="1" />
                 </div>
                 <div>
                     <p>Total</p>
@@ -62,10 +62,9 @@ export default {
     },
     methods: {
         verifyCart() {
-            axios.post("/api/cart", {"cartProducts": this.$store.getters.getCart})
+            axios.post(process.env.VUE_APP_ROOT_API + "/api/cart", {"cartProducts": this.$store.getters.getCart})
                 .then(response => {
                     this.cart = response.data.message
-                    console.log(response.data.message)
                     this.$store.commit("setCart", this.cart.cartProducts)
                     this.loaded = true
                 })

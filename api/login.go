@@ -53,6 +53,7 @@ func PostRefresh(c *gin.Context) {
 	token, err := c.Cookie("token")
 	if err != nil {
 		c.JSON(400, gin.H{"message": "Could not refresh token"})
+		return
 	}
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

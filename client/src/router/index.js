@@ -5,6 +5,20 @@ import axios from 'axios'
 
 Vue.use(VueRouter)
 
+function validateAndRefreshToken(to, from, next) {
+    axios(process.env.VUE_APP_ROOT_API + "/api/refresh", {method:"post", withCredentials: true})
+        .then(response => {
+            if (response.status == 200) {
+                next()
+            } else {
+                next("/login")
+            }
+        })
+        .catch(() => {
+            next("/login")
+        })
+}
+
 const routes = [
     {
         path: '/',
@@ -42,17 +56,14 @@ const routes = [
     {
         path: "/dashboard",
         name: "Dashboard",
-        beforeEnter: (to, from, next) => {
-            axios("/api/refresh", {method:"post", withCredentials: true})
-                .then(response => {
-                    if (response.status == 200) {
-                        next()
-                    } else {
-                        next("/login")
-                    }
-                })
-        },
+        beforeEnter: validateAndRefreshToken,
         component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+    },
+    {
+        path: "/dashboard/products",
+        name: "DashboardProducts",
+        beforeEnter: validateAndRefreshToken,
+        component: () => import(/* webpackChunkName: "dashboardproducts" */ '../views/DashboardProducts.vue')
     },
     {
         path: "*",

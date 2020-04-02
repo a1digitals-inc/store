@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
 import StoreItem from "@/components/StoreItem.vue"
 import Spinner from "@/components/Spinner.vue"
 
@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         fetchItems() {
-            axios.get("/api/products")
+            axios.get(process.env.VUE_APP_ROOT_API + "/api/products")
             .then(response => {
                 this.products = response.data.message
                 this.loaded = true

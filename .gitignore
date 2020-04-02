@@ -8,6 +8,6 @@ package-lock.json
 go.sum
 *.o
 Makefile
-*.env
+*local.env
 build.sh
 config.env

@@ -5,6 +5,7 @@ import (
 	"github.com/lithammer/shortuuid"
 	"github.com/sergiosegrera/store/db"
 	"github.com/sergiosegrera/store/models"
+	"log"
 	"os"
 )
 
@@ -85,8 +86,9 @@ func PostImage(c *gin.Context) {
 		return
 	}
 
-	err = CompressAndSaveFile(file, dest)
+	err = CompressAndSaveFile(file, "."+dest)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"message": "Internal server error"})
 		return
 	}

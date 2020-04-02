@@ -16,7 +16,7 @@ export default {
   },
   methods: {
       submit() {
-          axios("/api/login", {method: "post", data: {password: this.password}, withCredentials: true})
+          axios(process.env.VUE_APP_ROOT_API + "/api/login", {method: "post", data: {password: this.password}, withCredentials: true})
           .then(response => {
               if (response.data.message == "Authenticated") {     
                 this.$router.push("/dashboard")

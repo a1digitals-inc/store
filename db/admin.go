@@ -54,6 +54,7 @@ func GetImages(identifier string) ([]string, error) {
 	if err != nil {
 		return images, err
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var image string

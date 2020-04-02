@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         fetchProduct() {
-            axios.get("/api/product/" + this.identifier)
+            axios.get(process.env.VUE_APP_ROOT_API + "/api/product/" + this.identifier)
             .then(response => {
                 this.product = response.data.message
                 if (this.product.options) { 
