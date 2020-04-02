@@ -3,14 +3,17 @@ Store is an online e-commerce web application designed for small online stores.
 
 ## Project Structure
 ```
-/api -- Handlers
-/cmd -- Main file
-/db -- Database
-/models
-/client -- Vue frontend
+/client -- Vue client
+
+/server -- Go API server
+/server/api -- Handlers
+/server/cmd -- Main file
+/server/db -- Database
+/server/models
+/server/client -- Vue frontend
 ```
 
-## Endpoints
+## API server endpoints
 ```
 GET /
 
@@ -20,6 +23,7 @@ POST /api/cart
 POST /api/checkout
 
 POST /api/login
+POST /api/refresh -- Auth required
 
 GET /api/admin/products -- Auth required
 GET /api/admin/product/:name -- Auth required
@@ -31,6 +35,12 @@ POST /api/admin/image -- Auth required
 GET /api/admin/stocks/:name -- Auth required
 PUT /api/admin/stocks/:name -- Auth required
 POST /api/admin/stocks/:name -- Auth required
+```
+
+## Running with Docker
+```
+$ git clone https://github.com/sergiosegrera/store
+$ docker-compose up
 ```
 
 ## TODO

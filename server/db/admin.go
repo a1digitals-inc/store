@@ -1,6 +1,6 @@
 package db
 
-import "github.com/sergiosegrera/store/models"
+import "github.com/sergiosegrera/store/server/models"
 
 func InsertProduct(product *models.Product) error {
 	err := db.QueryRow(

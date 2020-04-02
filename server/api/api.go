@@ -2,7 +2,7 @@ package api
 
 import (
 	"database/sql"
-	"github.com/sergiosegrera/store/db"
+	"github.com/sergiosegrera/store/server/db"
 	"github.com/stripe/stripe-go"
 	"os"
 )

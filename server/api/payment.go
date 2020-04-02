@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sergiosegrera/store/db"
-	"github.com/sergiosegrera/store/models"
+	"github.com/sergiosegrera/store/server/db"
+	"github.com/sergiosegrera/store/server/models"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/paymentintent"
 	"log"

@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sergiosegrera/store/db"
+	"github.com/sergiosegrera/store/server/db"
 )
 
 func GetProducts(c *gin.Context) {

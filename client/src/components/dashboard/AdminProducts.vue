@@ -1,10 +1,11 @@
 <template>
-    <div class="text-center">
+    <div class="text-center w-80 m-auto">
         <h2>Store Products</h2>
         <div v-if="loaded">
             <ul>
                 <li v-for="product in products" :key="product.identifier">{{ product.name }}</li>
             </ul>
+            <router-link to="/dashboard/product"><button class="btn">New Product</button></router-link>
         </div>
         <div v-else>
             <Spinner />

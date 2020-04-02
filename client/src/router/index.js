@@ -66,6 +66,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "dashboardproducts" */ '../views/DashboardProducts.vue')
     },
     {
+        path: "/dashboard/product",
+        name: "DashboardProduct",
+        beforeEnter: validateAndRefreshToken,
+        component: () => import(/* webpackChunkName "dashboardproduct" */ '../views/DashboardProduct.vue')
+    },
+    {
         path: "*",
         name: "NotFound",
         component: () => import(/* webpackChunkName: "notFound" */ '../views/NotFound.vue')

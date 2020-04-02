@@ -2,7 +2,7 @@ package db
 
 import (
 	"errors"
-	"github.com/sergiosegrera/store/models"
+	"github.com/sergiosegrera/store/server/models"
 )
 
 func GetStocks(identifier string) ([]models.Stock, error) {

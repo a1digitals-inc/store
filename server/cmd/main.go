@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/sergiosegrera/store/api"
+	"github.com/sergiosegrera/store/server/api"
 	"os"
 )
 
@@ -17,15 +17,21 @@ func main() {
 	router := gin.Default()
 
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
-	router.Use(static.Serve("/", static.LocalFile("./client/dist", false)))
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:8081"}
+	config.AllowCredentials = true
+	config.AllowHeaders = []string{"Origin", "Content-Type"}
+
+	router.Use(cors.New(config))
 
 	router.Static("/static", "./static/")
 
 	router.GET("/api/products", api.GetProducts)
 	router.GET("/api/product/:name", api.GetProduct)
 	router.POST("/api/cart", api.PostCart)
-	// TODO
 	router.POST("/api/checkout", api.PostCheckout)
+	// TODO:
 	//	router.POST("/api/order/confirm", api.PostConfirm)
 	// router.POST("/api/order/cancel")
 
@@ -45,10 +51,6 @@ func main() {
 	router.GET("/api/admin/stocks/:name", api.Auth(api.GetStocks))
 	router.PUT("/api/admin/stocks/:name", api.Auth(api.PutStock))
 	router.POST("/api/admin/stocks/:name", api.Auth(api.PostStock))
-
-	router.NoRoute(func(c *gin.Context) {
-		c.File("./client/dist/index.html")
-	})
 
 	router.Run(":" + port)
 }

@@ -2,7 +2,7 @@ package db
 
 import (
 	"database/sql"
-	"github.com/sergiosegrera/store/models"
+	"github.com/sergiosegrera/store/server/models"
 )
 
 func GetProduct(id string, p bool) (*models.Product, error) {

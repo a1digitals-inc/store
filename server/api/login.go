@@ -4,8 +4,8 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/sergiosegrera/store/db"
-	"github.com/sergiosegrera/store/models"
+	"github.com/sergiosegrera/store/server/db"
+	"github.com/sergiosegrera/store/server/models"
 	"golang.org/x/crypto/bcrypt"
 	"os"
 	"time"
@@ -90,7 +90,7 @@ func Auth(next gin.HandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token, err := c.Cookie("token")
 		if err != nil {
-			c.Redirect(302, "/login")
+			c.JSON(301, gin.H{"message": "Invalid Token"})
 			return
 		} else {
 			parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {

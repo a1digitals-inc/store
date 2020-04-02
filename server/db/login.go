@@ -3,6 +3,7 @@ package db
 import "log"
 
 func GetPassword() string {
+	// TODO: Return error on no password found
 	var password string
 	err := db.QueryRow("SELECT value FROM settings WHERE name='password'").Scan(&password)
 	if err != nil {

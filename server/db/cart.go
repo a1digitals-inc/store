@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/sergiosegrera/store/models"
+	"github.com/sergiosegrera/store/server/models"
 )
 
 func CheckCart(cart *models.Cart) *models.Cart {
