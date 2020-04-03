@@ -10,6 +10,6 @@ services:
     web:
         build: ./client
         ports:
-            - "8081:80"
+            - "80:80"
         depends_on:
             - api
