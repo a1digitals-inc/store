@@ -42,6 +42,14 @@ POST /api/admin/stocks/:name -- Auth required
 $ git clone https://github.com/sergiosegrera/store
 $ docker-compose up
 ```
+This starts the development environment.  
+Uses [CompileDaemon](https://github.com/githubnemo/CompileDaemon) for live backend reload.  
+Uses Vue-Cli for live frontend reload.
+
+## Production
+```
+$ docker-compose -f docker-compose.prod.yml
+```
 
 ## TODO
 * General code cleanup

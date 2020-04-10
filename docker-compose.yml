@@ -2,14 +2,26 @@ version: "3.7"
 services:
     api:
         build: ./server
-        ports:
-            - "8080:80"
+        volumes:
+            - "./server:/app"
+        expose:
+            - "8080"
         env_file:
-            - ./server/config.local.env
+            - ./config.local.env
 
     web:
         build: ./client
+        volumes:
+            - "./client:/app"
+        expose:
+            - "8081"
+        depends_on:
+            - api
+
+    proxy:
+        build: ./proxy
         ports:
             - "80:80"
         depends_on:
             - api
+            - web

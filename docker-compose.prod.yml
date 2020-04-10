@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+    api:
+        build: 
+            context: ./server
+            dockerfile: Dockerfile.prod
+        expose:
+            - "8080"
+        env_file:
+            - ./config.local.env
+
+    nginx:
+        build: 
+            context: ./client
+            dockerfile: Dockerfile.prod
+        ports:
+            - "80:80"
+        depends_on:
+            - api

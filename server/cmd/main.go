@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/sergiosegrera/store/server/api"
@@ -17,13 +16,6 @@ func main() {
 	router := gin.Default()
 
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
-
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:8081"}
-	config.AllowCredentials = true
-	config.AllowHeaders = []string{"Origin", "Content-Type"}
-
-	router.Use(cors.New(config))
 
 	router.Static("/static", "./static/")
 
